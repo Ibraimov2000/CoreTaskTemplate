@@ -6,9 +6,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionException;
 import org.hibernate.Transaction;
-import org.hibernate.tool.schema.spi.CommandAcceptanceException;
-
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
