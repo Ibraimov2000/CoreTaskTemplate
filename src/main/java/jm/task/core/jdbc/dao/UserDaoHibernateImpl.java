@@ -6,6 +6,8 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionException;
 import org.hibernate.Transaction;
+
+import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,8 +59,10 @@ public class UserDaoHibernateImpl implements UserDao {
     public void removeUserById(long id) {
         try (Session session = Util.getSessionFactory().openSession()){
             Transaction transaction = session.beginTransaction();
-            User user = session.get(User.class, id);
-            session.delete(user);
+
+            Query query =  session.createQuery("delete User where id =: id");
+            query.setParameter("id", id).executeUpdate();
+
             transaction.commit();
             session.close();
         } catch (Exception e) {
@@ -72,7 +76,8 @@ public class UserDaoHibernateImpl implements UserDao {
         Transaction transaction = null;
         try (Session session = Util.getSessionFactory().openSession()) {
             transaction = session.getTransaction();
-            users = (List<User>) session.createQuery("FROM User").list();
+            String hql = "FROM User";
+            users = (List<User>) session.createQuery(hql).list();
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
